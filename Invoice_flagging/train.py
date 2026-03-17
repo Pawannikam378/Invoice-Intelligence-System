@@ -36,7 +36,7 @@ def main():
   )
   # Save best model
   os.makedirs(MODELS_DIR, exist_ok=True)
-  joblib.dump(grid_search.best_estimator_, os.path.join(MODELS_DIR, 'predict_invoice_flag_model.pkl'))
+  joblib.dump(grid_search.best_estimator_, os.path.join(MODELS_DIR, 'predict_flag_invoice.pkl'))
 
 
 if __name__ == "__main__":
