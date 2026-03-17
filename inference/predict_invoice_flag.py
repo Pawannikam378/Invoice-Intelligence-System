@@ -23,7 +23,7 @@ def predict_invoice_flag(input_data):
   model = load_model()
   scaler = load_scaler()
   input_df = pd.DataFrame(input_data)
-  input_scaled = scaler.transform(input_df)
+  input_scaled = scaler.transform(input_df.values)
   input_df['Predicted_Invoice_Flag'] = model.predict(input_scaled)
   return input_df
 
