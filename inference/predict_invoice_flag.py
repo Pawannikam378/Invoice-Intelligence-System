@@ -1,7 +1,12 @@
+import os
 import joblib
+import numpy as np
 import pandas as pd
 
-Model_Path = "C:\Users\sai\Downloads\data-20260317T165009Z-1-001\data\models\predict_freight_model.pkl"
+# Resolve paths relative to the project root (one level up from this script)
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+MODEL_PATH = os.path.join(BASE_DIR, "models", "predict_invoice_flag_model.pkl")
+SCALER_PATH = os.path.join(BASE_DIR, "models", "scaler.pkl")
 
 
 def load_model(model_path: str = MODEL_PATH):
@@ -9,15 +14,26 @@ def load_model(model_path: str = MODEL_PATH):
     model = joblib.load(f)
   return model
 
+def load_scaler(scaler_path: str = SCALER_PATH):
+  with open(scaler_path, "rb") as f:
+    scaler = joblib.load(f)
+  return scaler
+
 def predict_invoice_flag(input_data):
   model = load_model()
+  scaler = load_scaler()
   input_df = pd.DataFrame(input_data)
-  input_df['Predicted_Invoice_Flag'] = model.predict(input_df)
+  input_scaled = scaler.transform(input_df)
+  input_df['Predicted_Invoice_Flag'] = model.predict(input_scaled)
   return input_df
 
 if __name__ == "__main__":
   sample_data = {
-    "Dollars": [18500, 5000, 3000, 200]
+    "invoice_quantity": [50],
+    "invoice_dollars": [162.0],
+    "Freight": [1.73],
+    "total_item_quantity": [162],
+    "total_item_dollars": [2467.0]
   }
   prediction = predict_invoice_flag(sample_data)
   print(prediction)
