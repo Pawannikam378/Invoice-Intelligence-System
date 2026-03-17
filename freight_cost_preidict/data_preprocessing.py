@@ -18,7 +18,7 @@ def prepare_features(df: pd.DataFrame):
   Select features and target variables.
   '''
   X = df[['Dollars']]
-  y = df[['Freight']]
+  y = df['Freight']
   return X, y
 
 def split_data(X,y, test_size=0.2, random_state=42):
